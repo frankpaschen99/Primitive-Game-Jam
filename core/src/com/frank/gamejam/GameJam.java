@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameJam extends ApplicationAdapter {
 	SpriteBatch batch;
-	
+	// testing eclipse git ui
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
