@@ -2,7 +2,9 @@
 
 package stages;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,7 +25,6 @@ public class LevelOne implements Screen {
 	
 	public LevelOne(GameJam game) {
 		this.game = game;
-		p = new Player();
 		batch = new SpriteBatch();
 		
 		/* Ortho Camera */
@@ -35,6 +36,10 @@ public class LevelOne implements Screen {
 		world = new World(new Vector2(0, -10), true);
 		debugRenderer = new Box2DDebugRenderer();
 		
+		/* Player Setup */
+		p = new Player();
+		p.physicsSetup(world);
+		
 		System.out.println("LevelOne started");
 	}
 	@Override
@@ -45,6 +50,9 @@ public class LevelOne implements Screen {
 
 	@Override
 	public void render(float delta) {
+		Gdx.gl.glClearColor( 0, 0, 0, 1 );
+	    Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+ 
 		// TODO Auto-generated method stub
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
@@ -55,7 +63,7 @@ public class LevelOne implements Screen {
 		batch.end();
 		p.update();
 		
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
 	}
 
