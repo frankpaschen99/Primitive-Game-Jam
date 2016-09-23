@@ -1,9 +1,13 @@
 package entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -18,11 +22,11 @@ import utilities.Constants;
 public class Player {
 	private Sprite sprite;
 	private Body body;
+
 	public Player() {
 		/* Sprite Initialization */
 		sprite = new Sprite(new Texture(Gdx.files.internal("player.png")));
 		sprite.setPosition(50, 50);
-		
 		System.out.println("Player constructor called");
 	}
 	public void physicsSetup(World world) {
@@ -31,10 +35,10 @@ public class Player {
 		bodyDef.type = BodyType.DynamicBody;
 		// Set our body's starting position in the world
 		bodyDef.position.set(this.sprite.getX(), this.sprite.getY());
-
+		bodyDef.fixedRotation = true;
 		// Create our body in the world using our body definition
 		body = world.createBody(bodyDef);
-
+		
 		// Create a circle shape and set its radius to 6
 		PolygonShape rect = new PolygonShape();
 		rect.setAsBox(this.sprite.getWidth() / 2, this.sprite.getHeight() / 2);
@@ -44,9 +48,9 @@ public class Player {
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = rect;
-		fixtureDef.density = 0.5f; 
-		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 0.6f; // Make it bounce a little bit
+		fixtureDef.density = 50f; 
+		fixtureDef.friction = 1f;
+		fixtureDef.restitution = 0.2f; // Make it bounce a little bit
 
 		// Create our fixture and attach it to the body
 		Fixture fixture = body.createFixture(fixtureDef);
@@ -58,7 +62,25 @@ public class Player {
 	public void draw(Batch batch) {
 		batch.draw(sprite, sprite.getX(), sprite.getY());
 	}
-	public void update() {
+	public void update(OrthographicCamera camera) {
 		this.sprite.setPosition(body.getPosition().x - this.sprite.getWidth() / 2, body.getPosition().y - this.sprite.getHeight() / 2);
+		Vector2 vel = this.body.getLinearVelocity();
+		Vector2 pos = this.body.getPosition();
+
+		// apply left impulse, but only if max velocity is not reached yet
+		if (Gdx.input.isKeyPressed(Keys.A)) {          
+		     this.body.applyLinearImpulse(-50f, 0, pos.x, pos.y, true);
+		     System.out.println("called");
+		}
+
+		// apply right impulse, but only if max velocity is not reached yet
+		if (Gdx.input.isKeyPressed(Keys.D)) {
+		     this.body.applyLinearImpulse(50f, 0, pos.x, pos.y, true);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			this.body.applyLinearImpulse(0, 1500f, pos.x, pos.y, true);
+		}
+		//System.out.println(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world
+		
 	}
 }

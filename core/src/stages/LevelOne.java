@@ -9,19 +9,26 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.frank.gamejam.GameJam;
 import utilities.Constants;
+import utilities.Map;
 import entities.Player;
 
 public class LevelOne implements Screen {
 	GameJam game;
 	Player p;
-	OrthographicCamera camera;
+	public final OrthographicCamera camera;
 	Batch batch;
 	World world;
 	Box2DDebugRenderer debugRenderer;
+	Map map;
 	
 	public LevelOne(GameJam game) {
 		this.game = game;
@@ -35,10 +42,20 @@ public class LevelOne implements Screen {
 		/* Box2D Physics */
 		world = new World(new Vector2(0, -10), true);
 		debugRenderer = new Box2DDebugRenderer();
+		BodyDef groundBodyDef = new BodyDef();  
+		groundBodyDef.position.set(new Vector2(0, 10));  
+		Body groundBody = world.createBody(groundBodyDef);  
+		PolygonShape groundBox = new PolygonShape();  
+		groundBox.setAsBox(camera.viewportWidth, 10.0f);
+		groundBody.createFixture(groundBox, 0.0f); 
+		groundBox.dispose();
 		
 		/* Player Setup */
 		p = new Player();
 		p.physicsSetup(world);
+		
+		/* Map Setup */
+		map = new Map("json_test.json");
 		
 		System.out.println("LevelOne started");
 	}
@@ -61,7 +78,7 @@ public class LevelOne implements Screen {
 		p.draw(batch);
 		
 		batch.end();
-		p.update();
+		p.update(camera);
 		
 		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
