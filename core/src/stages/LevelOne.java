@@ -22,13 +22,13 @@ import utilities.Map;
 import entities.Player;
 
 public class LevelOne implements Screen {
-	GameJam game;
-	Player p;
-	public final OrthographicCamera camera;
-	Batch batch;
-	World world;
-	Box2DDebugRenderer debugRenderer;
-	Map map;
+	private GameJam game;
+	private Player p;
+	private final OrthographicCamera camera;
+	private Batch batch;
+	private World world;
+	private Box2DDebugRenderer debugRenderer;
+	private Map map;
 	
 	public LevelOne(GameJam game) {
 		this.game = game;
@@ -39,6 +39,7 @@ public class LevelOne implements Screen {
 		camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2);
 		camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
 		camera.update();
+		
 		/* Box2D Physics */
 		world = new World(new Vector2(0, -10), true);
 		debugRenderer = new Box2DDebugRenderer();
@@ -62,19 +63,18 @@ public class LevelOne implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		System.out.println("show() called in LevelOne");
 	}
 
 	@Override
 	public void render(float delta) {
+		// Clear the buffer so we don't get that weird windows xp thing
 		Gdx.gl.glClearColor( 0, 0, 0, 1 );
 	    Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
- 
-		// TODO Auto-generated method stub
+
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
 		
-		/*** Begin drawing entities here ***/
+		/** Begin drawing entities here **/
 		p.draw(batch);
 		
 		batch.end();

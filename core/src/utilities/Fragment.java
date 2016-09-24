@@ -1,5 +1,6 @@
 package utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Polygon;
@@ -13,7 +14,6 @@ public class Fragment {
 	
 	public Fragment(byte i, List<Vector2> _vertices) {
 		// TODO: be able to create a Polygon object from _vertices
-		p = new Polygon();
 		
 	}
 	public Polygon getArea() {
