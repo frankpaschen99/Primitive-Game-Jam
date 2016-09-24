@@ -14,21 +14,19 @@ public class Map {
 	
 	public Map(String json) {
 		this.jsonFile = json;
-		this.deserialize();
 		this.fragments = new ArrayList<Fragment>();
+		this.deserialize();
 	}
 	void deserialize() {
 		JsonReader json = new JsonReader();
 		JsonValue base = json.parse(Gdx.files.internal(this.jsonFile));
 		
-		List<Vector2> vertices = new ArrayList<Vector2>();
-		
 		for (JsonValue fragments : base.get("fragments")) {	
+			List<Vector2> vertices = new ArrayList<Vector2>();
 			for (JsonValue v : fragments.get("vertices")) {
 				vertices.add(new Vector2(Float.parseFloat(v.getString("x")), Float.parseFloat(v.getString("y"))));
 			}
-			// TODO: make this work
-			//this.fragments.add(new Fragment(Byte.parseByte(fragments.getString("region_id")), vertices));
+			this.fragments.add(new Fragment(Byte.parseByte(fragments.getString("region_id")), vertices));
 		}
 	}
 }
