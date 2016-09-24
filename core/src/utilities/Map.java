@@ -29,4 +29,7 @@ public class Map {
 			this.fragments.add(new Fragment(Byte.parseByte(fragments.getString("region_id")), vertices));
 		}
 	}
+	public List<Fragment> getFragments() {
+		return this.fragments;
+	}
 }

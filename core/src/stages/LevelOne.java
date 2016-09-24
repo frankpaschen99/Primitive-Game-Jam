@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.frank.gamejam.GameJam;
 import utilities.Constants;
+import utilities.Fragment;
 import utilities.Map;
 import entities.Player;
 
@@ -44,10 +45,10 @@ public class LevelOne implements Screen {
 		world = new World(new Vector2(0, -10), true);
 		debugRenderer = new Box2DDebugRenderer();
 		BodyDef groundBodyDef = new BodyDef();  
-		groundBodyDef.position.set(new Vector2(0, 10));  
+		groundBodyDef.position.set(new Vector2(0, 0));  
 		Body groundBody = world.createBody(groundBodyDef);  
 		PolygonShape groundBox = new PolygonShape();  
-		groundBox.setAsBox(camera.viewportWidth, 10.0f);
+		groundBox.setAsBox(camera.viewportWidth, 0f);
 		groundBody.createFixture(groundBox, 0.0f); 
 		groundBox.dispose();
 		
@@ -82,8 +83,34 @@ public class LevelOne implements Screen {
 		
 		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
+		this.fragmentCollision();
 	}
-
+	private void fragmentCollision() {
+		// determine physics properties that affect player here
+		switch(getRegionCollision()) {
+		case -1:
+			break;
+		case 1:
+			this.p.body.setGravityScale(0);
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		default:
+			break;
+		}
+	}
+	private int getRegionCollision() {
+		//System.out.println(this.p.getPosition());
+		if(this.map.getFragments().get(0).getArea().contains(this.p.getPosition())) {
+			System.out.println("Collision");
+		}
+		for (Fragment f : this.map.getFragments()) {
+			if (f.getArea().contains(this.p.getPosition())) return f.regionId;
+		}
+		return -1;
+	}
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub

@@ -21,7 +21,7 @@ import utilities.Constants;
 
 public class Player {
 	private Sprite sprite;
-	private Body body;
+	public Body body;
 
 	public Player() {
 		/* Sprite Initialization */
@@ -42,16 +42,14 @@ public class Player {
 		// Create a circle shape and set its radius to 6
 		PolygonShape rect = new PolygonShape();
 		rect.setAsBox(this.sprite.getWidth() / 2, this.sprite.getHeight() / 2);
-		
-		//CircleShape rect = new CircleShape();
-		//rect.setRadius(6);
+
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = rect;
-		fixtureDef.density = 50f; 
+		fixtureDef.density = 1f; 
 		fixtureDef.friction = 1f;
 		fixtureDef.restitution = 0.2f; // Make it bounce a little bit
-
+		body.setGravityScale(5);	// higher # = increases gravity for this body only
 		// Create our fixture and attach it to the body
 		Fixture fixture = body.createFixture(fixtureDef);
 
@@ -70,7 +68,6 @@ public class Player {
 		// apply left impulse, but only if max velocity is not reached yet
 		if (Gdx.input.isKeyPressed(Keys.A)) {          
 		     this.body.applyLinearImpulse(-50f, 0, pos.x, pos.y, true);
-		     System.out.println("called");
 		}
 
 		// apply right impulse, but only if max velocity is not reached yet
@@ -78,9 +75,11 @@ public class Player {
 		     this.body.applyLinearImpulse(50f, 0, pos.x, pos.y, true);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			this.body.applyLinearImpulse(0, 1500f, pos.x, pos.y, true);
+			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
 		}
-		//System.out.println(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world
-		
+		//System.out.println(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
+	}
+	public Vector2 getPosition() {
+		return this.body.getPosition();
 	}
 }
