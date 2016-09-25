@@ -18,6 +18,7 @@ import utilities.Constants;
 import utilities.Fragment;
 import utilities.Map;
 import utilities.Text;
+import entities.EntityManager;
 import entities.Player;
 import entities.RectangleCollider;
 
@@ -27,12 +28,14 @@ public class LevelOne implements Screen {
 	@SuppressWarnings("unused")
 	private Box2DDebugRenderer debugRenderer;
 	private Map map;
-	private RectangleCollider r;
+	private EntityManager entityManager;
+	
 	private GameJam game;	// going to be used later for moving to the next level
 	
 	public LevelOne(GameJam _game) {
 		batch = new SpriteBatch();
 		this.game = _game;
+		entityManager = new EntityManager();
 		
 		/* Ortho Camera */
 		Constants.camera.translate(Constants.camera.viewportWidth / 2, Constants.camera.viewportHeight / 2);
@@ -51,14 +54,19 @@ public class LevelOne implements Screen {
 		groundBox.dispose();
 		
 		/* Player Setup */
-		p = new Player();
+		p = new Player(190, 25);
 		p.physicsSetup(Constants.world);
 		
 		/* Map Setup */
-		map = new Map("json_test.json");
+		map = new Map("level_1.json");
 		
-		/* Colliders */
-		r = new RectangleCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60);
+		// Colliders
+		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60);
+		// Screen borders
+		entityManager.addCollider(new Vector2(-2, 0), 1, 100); // left side
+		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth+3, 0), 1, 100); // right side
+		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight+3), 100, 1);
+		
 		System.out.println("LevelOne started");
 	}
 	@Override
@@ -114,8 +122,7 @@ public class LevelOne implements Screen {
 				Constants.world.setGravity(new Vector2(0, -10));
 				break;
 			case 1:
-				//this.p.body.setGravityScale(0);
-				Constants.world.setGravity(new Vector2(0, 10));
+				Constants.world.setGravity(new Vector2(0, 5));
 				break;
 			case 2:
 				break;
