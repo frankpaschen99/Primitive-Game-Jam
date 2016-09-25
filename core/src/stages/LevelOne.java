@@ -19,6 +19,7 @@ import utilities.Constants;
 import utilities.Fragment;
 import utilities.Map;
 import utilities.Text;
+import entities.EndGate;
 import entities.EntityManager;
 import entities.Player;
 import entities.RectangleCollider;
@@ -32,12 +33,13 @@ public class LevelOne implements Screen {
 	private EntityManager entityManager;
 	private OrthographicCamera textCam;
 	private GameJam game;	// going to be used later for moving to the next level
-	
+	private EndGate endGate;
+		
 	public LevelOne(GameJam _game) {
 		batch = new SpriteBatch();
 		this.game = _game;
 		entityManager = new EntityManager();
-		// testing git again
+
 		/* Ortho Camera */
 		Constants.camera.translate(Constants.camera.viewportWidth / 2, Constants.camera.viewportHeight / 2);
 		Constants.camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
@@ -71,6 +73,8 @@ public class LevelOne implements Screen {
 		entityManager.addCollider(new Vector2(-2, 0), 1, 100); // left side
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth+3, 0), 1, 100); // right side
 		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight+3), 100, 1);
+		
+		endGate = new EndGate(new Vector2(20, 0));
 		
 		System.out.println("LevelOne started");
 	}
@@ -111,8 +115,9 @@ public class LevelOne implements Screen {
 		}
 		batch.end();
 	
-		// polygon drawing for the map is different. keep it out of batch.begin() and end()
+		// polygon drawing is different. keep it out of batch.begin() and end()
 		map.draw(batch);
+		endGate.draw();
 		
 		// update any entities necessary
 		p.update(Constants.camera);
