@@ -73,7 +73,7 @@ public class LevelOne implements Screen {
 		entityManager.addCollider(new Vector2(-2, 0), 1, 100); // left side
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth+3, 0), 1, 100); // right side
 		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight+3), 100, 1);
-		
+		entityManager.addCollider(new Vector2(40, 90), 5, 1);
 		endGate = new EndGate(new Vector2(20, 0));
 		
 		System.out.println("LevelOne started");

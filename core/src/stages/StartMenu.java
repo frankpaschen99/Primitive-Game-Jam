@@ -7,13 +7,18 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.frank.gamejam.GameJam;
+
+import utilities.Text;
 
 public class StartMenu implements Screen {
 
 	private SpriteBatch batch;
 	private Sprite bgSprite;
 	private GameJam game;
+	private boolean drawText = false;
 	
 	public StartMenu(GameJam _game) {
 		this.game = _game;
@@ -28,14 +33,24 @@ public class StartMenu implements Screen {
 
 	@Override
 	public void render(float delta) {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.TTF"));
+	    FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+	    parameter.size = 16;
+	    Text t = new Text(generator, parameter);
+	    
 		// TODO Auto-generated method stub
 		batch.begin();
 		bgSprite.draw(batch);
+		if (drawText) t.draw("Goal: Get the objective block, then proceed to the \nexit gate. \nThe map is divided into fragments, each with \nunique physical properties. \nPress ENTER again to begin. \nGood luck.", batch, 0, Gdx.graphics.getHeight() / 2);
 		batch.end();
 		
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) && drawText) {
 			this.game.setScreen(new LevelOne(this.game));
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) && !drawText) {
+			drawText = true;
+			bgSprite.getTexture().dispose();
+		} 
 	}
 
 	@Override
