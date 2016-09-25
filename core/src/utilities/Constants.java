@@ -9,8 +9,8 @@ public final class Constants {
 	public static final String GAME_AUTHOR = "Frank Paschen";
 	public static final float WORLD_WIDTH = 200;	// yayy magic constants??? where tf did i get these numbers lol
 	public static final float WORLD_HEIGHT = 150;
-	public static final float PPM = 30;	// box2d pixels per meter. Determined by abitrary sprite height / actual pixel height.
-										// i said the sprite is 6 in (0.1524m) tall (arbitrary) and it is 5 pixels high.
+	public static final float PPM = 0.5f;
+	
 	public static World world = new World(new Vector2(0, -10), true); // not technically a constant but what are you gonna do about it
 	public static final OrthographicCamera camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
 }

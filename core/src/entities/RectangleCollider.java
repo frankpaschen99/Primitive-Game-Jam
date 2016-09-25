@@ -7,8 +7,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import utilities.Constants;
 
-public abstract class RectangleCollider {
-	public RectangleCollider(Vector2 position) {
+public class RectangleCollider {
+	public RectangleCollider(Vector2 position, float width, float height) {
 		// Create our body definition
 		BodyDef groundBodyDef = new BodyDef();  
 		// Set its world position
@@ -21,7 +21,7 @@ public abstract class RectangleCollider {
 		PolygonShape groundBox = new PolygonShape();  
 		// Set the polygon shape as a box which is twice the size of our view port and 20 high
 		// (setAsBox takes half-width and half-height as arguments)
-		groundBox.setAsBox(0, 10.0f);
+		groundBox.setAsBox(width*2, height*2);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		groundBody.createFixture(groundBox, 0.0f); 
 		// Clean up after ourselves

@@ -5,8 +5,9 @@ package stages;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,14 +17,17 @@ import com.frank.gamejam.GameJam;
 import utilities.Constants;
 import utilities.Fragment;
 import utilities.Map;
+import utilities.Text;
 import entities.Player;
+import entities.RectangleCollider;
 
 public class LevelOne implements Screen {
 	private Player p;
-	private Batch batch;
+	private SpriteBatch batch;
 	@SuppressWarnings("unused")
 	private Box2DDebugRenderer debugRenderer;
 	private Map map;
+	private RectangleCollider r;
 	public LevelOne(GameJam game) {
 		batch = new SpriteBatch();
 		
@@ -50,6 +54,8 @@ public class LevelOne implements Screen {
 		/* Map Setup */
 		map = new Map("json_test.json");
 		
+		/* Colliders */
+		r = new RectangleCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 1);
 		System.out.println("LevelOne started");
 	}
 	@Override
@@ -62,23 +68,30 @@ public class LevelOne implements Screen {
 		// Clear the buffer so we don't get that weird windows xp thing
 		Gdx.gl.glClearColor( 0, 0, 0, 1 );
 	    Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-
+		
+	    /* Font Setup */
+	    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.TTF"));
+	    FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+	    parameter.size = 6;
+	    Text t = new Text(generator, parameter);
+	    
+	    
 		batch.begin();
 		batch.setProjectionMatrix(Constants.camera.combined);
 		
 		/** Begin drawing entities here **/
 		p.draw(batch);
-		
+		t.draw("github.com/frankpaschen99", batch, 0, Constants.camera.viewportHeight-2);
 		
 		batch.end();
-		
+	
 		// polygon drawing for the map is different. keep it out of batch.begin() and end()
 		map.draw(batch);
 		
 		// update any entities necessary
 		p.update(Constants.camera);
 		
-		//debugRenderer.render(world, camera.combined);
+		debugRenderer.render(Constants.world, Constants.camera.combined);
 		Constants.world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
 		this.fragmentCollision();
 	}
@@ -87,9 +100,11 @@ public class LevelOne implements Screen {
 		switch(getRegionCollision()) {
 			case -1:	// not colliding
 				this.p.body.setGravityScale(5);
+				System.out.println("NOT COLLIDING");
 				break;
 			case 1:
 				this.p.body.setGravityScale(0);
+				System.out.println("COLLIDING");
 				break;
 			case 2:
 				break;
