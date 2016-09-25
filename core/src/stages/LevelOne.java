@@ -28,8 +28,11 @@ public class LevelOne implements Screen {
 	private Box2DDebugRenderer debugRenderer;
 	private Map map;
 	private RectangleCollider r;
-	public LevelOne(GameJam game) {
+	private GameJam game;	// going to be used later for moving to the next level
+	
+	public LevelOne(GameJam _game) {
 		batch = new SpriteBatch();
+		this.game = _game;
 		
 		/* Ortho Camera */
 		Constants.camera.translate(Constants.camera.viewportWidth / 2, Constants.camera.viewportHeight / 2);
@@ -75,19 +78,23 @@ public class LevelOne implements Screen {
 	    parameter.size = 6;
 	    Text t = new Text(generator, parameter);
 	    
-	    
+	    //* SET UP SPRITEBATCH *//
 		batch.begin();
 		batch.setProjectionMatrix(Constants.camera.combined);
 		
-		/** Begin drawing entities here **/
+		// draw player
 		p.draw(batch);
+		
+		// Text Rendering
 		t.draw("github.com/frankpaschen99", batch, 0, Constants.camera.viewportHeight-2);
 		if (this.getRegionCollision() != -1) {
 			t.draw("Colliding (Grav Inverted)", batch, 0, 50);
 		} else {
 			t.draw("Not Colliding", batch, 0, 50);
 		}
+		
 		batch.end();
+		 //* RENDERING COMPLETE *//
 	
 		// polygon drawing for the map is different. keep it out of batch.begin() and end()
 		map.draw(batch);
@@ -105,12 +112,10 @@ public class LevelOne implements Screen {
 			case -1:	// not colliding
 				this.p.body.setGravityScale(5);
 				Constants.world.setGravity(new Vector2(0, -10));
-				System.out.println("NOT COLLIDING");
 				break;
 			case 1:
 				//this.p.body.setGravityScale(0);
 				Constants.world.setGravity(new Vector2(0, 10));
-				System.out.println("COLLIDING");
 				break;
 			case 2:
 				break;
@@ -130,14 +135,12 @@ public class LevelOne implements Screen {
 	}
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		// not going to happen, window is locked
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
