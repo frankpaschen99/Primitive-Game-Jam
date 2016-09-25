@@ -109,9 +109,9 @@ public class LevelOne implements Screen {
 		// Text Rendering
 		t.draw("github.com/frankpaschen99", batch, 0, this.textCam.viewportHeight);
 		if (this.getRegionCollision() != -1) {
-			t.draw("Colliding (Grav Inverted)", batch, 0, 50);
+			t.draw("Colliding (Grav Inverted)", batch, 0, 60);
 		} else {
-			t.draw("Not Colliding", batch, 0, 50);
+			t.draw("Not Colliding", batch, 0, 60);
 		}
 		batch.end();
 	
@@ -125,6 +125,12 @@ public class LevelOne implements Screen {
 		debugRenderer.render(Constants.world, Constants.camera.combined);
 		Constants.world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
 		this.fragmentCollision();
+		this.checkGateCollision();
+	}
+	private void checkGateCollision() {
+		if (this.endGate.getRectangle().contains(this.p.getPosition())) {
+			System.out.println("Level Complete");
+		}
 	}
 	private void fragmentCollision() {
 		// determine physics properties that affect player here

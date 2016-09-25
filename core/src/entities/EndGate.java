@@ -1,5 +1,6 @@
 package entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,6 +20,7 @@ public class EndGate {
 	}
 	public void draw() {
 		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.setColor(Color.BLUE);
 		shapeRenderer.rect(this.r.x, this.r.y, this.r.width, this.r.height);
 		shapeRenderer.end();
 	}
