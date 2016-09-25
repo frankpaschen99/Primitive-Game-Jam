@@ -7,17 +7,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-
-import utilities.Constants;
 
 public class Player {
 	private Sprite sprite;
@@ -51,6 +47,7 @@ public class Player {
 		fixtureDef.restitution = 0.2f; // Make it bounce a little bit
 		body.setGravityScale(5);	// higher # = increases gravity for this body only
 		// Create our fixture and attach it to the body
+		@SuppressWarnings("unused")
 		Fixture fixture = body.createFixture(fixtureDef);
 
 		// Remember to dispose of any shapes after you're done with them!
@@ -62,7 +59,6 @@ public class Player {
 	}
 	public void update(OrthographicCamera camera) {
 		this.sprite.setPosition(body.getPosition().x - this.sprite.getWidth() / 2, body.getPosition().y - this.sprite.getHeight() / 2);
-		Vector2 vel = this.body.getLinearVelocity();
 		Vector2 pos = this.body.getPosition();
 
 		// apply left impulse, but only if max velocity is not reached yet

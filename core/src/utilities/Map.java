@@ -42,8 +42,7 @@ public class Map {
 		// for each fragment, shape render them
 		shapeRenderer.begin(ShapeType.Line);
 		for(Fragment f : this.fragments) {
-			float x[] = {0, 30, 115, 0, 200, 11};
-			shapeRenderer.polygon(x);
+			shapeRenderer.polygon(f.getArea().getVertices());
 		}
 		shapeRenderer.end();
 	}

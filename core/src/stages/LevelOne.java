@@ -5,18 +5,13 @@ package stages;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 import com.frank.gamejam.GameJam;
 import utilities.Constants;
 import utilities.Fragment;
@@ -24,14 +19,12 @@ import utilities.Map;
 import entities.Player;
 
 public class LevelOne implements Screen {
-	private GameJam game;
 	private Player p;
-	private OrthographicCamera camera;
 	private Batch batch;
+	@SuppressWarnings("unused")
 	private Box2DDebugRenderer debugRenderer;
 	private Map map;
 	public LevelOne(GameJam game) {
-		this.game = game;
 		batch = new SpriteBatch();
 		
 		/* Ortho Camera */
