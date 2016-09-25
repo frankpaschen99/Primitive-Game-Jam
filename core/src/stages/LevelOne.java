@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -25,36 +26,33 @@ import entities.Player;
 public class LevelOne implements Screen {
 	private GameJam game;
 	private Player p;
-	private final OrthographicCamera camera;
+	private OrthographicCamera camera;
 	private Batch batch;
-	private World world;
 	private Box2DDebugRenderer debugRenderer;
 	private Map map;
-	
 	public LevelOne(GameJam game) {
 		this.game = game;
 		batch = new SpriteBatch();
 		
 		/* Ortho Camera */
-		camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
-		camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2);
-		camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
-		camera.update();
+		Constants.camera.translate(Constants.camera.viewportWidth / 2, Constants.camera.viewportHeight / 2);
+		Constants.camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+		Constants.camera.update();
 		
 		/* Box2D Physics */
-		world = new World(new Vector2(0, -10), true);
+		//world = new World(new Vector2(0, -10), true);
 		debugRenderer = new Box2DDebugRenderer();
 		BodyDef groundBodyDef = new BodyDef();  
 		groundBodyDef.position.set(new Vector2(0, 0));  
-		Body groundBody = world.createBody(groundBodyDef);  
+		Body groundBody = Constants.world.createBody(groundBodyDef);  
 		PolygonShape groundBox = new PolygonShape();  
-		groundBox.setAsBox(camera.viewportWidth, 0f);
+		groundBox.setAsBox(Constants.camera.viewportWidth, 0f);
 		groundBody.createFixture(groundBox, 0.0f); 
 		groundBox.dispose();
 		
 		/* Player Setup */
 		p = new Player();
-		p.physicsSetup(world);
+		p.physicsSetup(Constants.world);
 		
 		/* Map Setup */
 		map = new Map("json_test.json");
@@ -73,41 +71,46 @@ public class LevelOne implements Screen {
 	    Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
 		batch.begin();
-		batch.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(Constants.camera.combined);
 		
 		/** Begin drawing entities here **/
 		p.draw(batch);
 		
+		
 		batch.end();
-		p.update(camera);
+		
+		// polygon drawing for the map is different. keep it out of batch.begin() and end()
+		map.draw(batch);
+		
+		// update any entities necessary
+		p.update(Constants.camera);
 		
 		//debugRenderer.render(world, camera.combined);
-		world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
+		Constants.world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
 		this.fragmentCollision();
 	}
 	private void fragmentCollision() {
 		// determine physics properties that affect player here
 		switch(getRegionCollision()) {
-		case -1:
-			break;
-		case 1:
-			this.p.body.setGravityScale(0);
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		default:
-			break;
-		}
+			case -1:	// not colliding
+				this.p.body.setGravityScale(5);
+				break;
+			case 1:
+				this.p.body.setGravityScale(0);
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			default:
+				break;
+			}
 	}
-	private int getRegionCollision() {
-		//System.out.println(this.p.getPosition());
-		if(this.map.getFragments().get(0).getArea().contains(this.p.getPosition())) {
-			System.out.println("Collision");
-		}
+	private byte getRegionCollision() {
 		for (Fragment f : this.map.getFragments()) {
-			if (f.getArea().contains(this.p.getPosition())) return f.regionId;
+			if (f.getArea().contains(this.p.getPosition())) {
+				return f.getId();
+			}
 		}
 		return -1;
 	}

@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Fragment {
 	private Polygon p;
-	public byte regionId;
+	private byte regionId;
 	
 	/* WHAT THE HELL IS THIS CANCER */
 	public Fragment(byte _regionId, List<Vector2> _vertices) {
@@ -25,9 +25,12 @@ public class Fragment {
 			vertices[i++] = (f != null ? f : Float.NaN);
 		}
 		this.p = new Polygon(vertices);
-		this.regionId = regionId;
+		this.regionId = _regionId;
 	}
 	public Polygon getArea() {
 		return this.p;
+	}
+	public byte getId() {
+		return this.regionId;
 	}
 }
