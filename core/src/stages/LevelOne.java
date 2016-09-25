@@ -55,7 +55,7 @@ public class LevelOne implements Screen {
 		map = new Map("json_test.json");
 		
 		/* Colliders */
-		r = new RectangleCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 1);
+		r = new RectangleCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60);
 		System.out.println("LevelOne started");
 	}
 	@Override
@@ -82,7 +82,11 @@ public class LevelOne implements Screen {
 		/** Begin drawing entities here **/
 		p.draw(batch);
 		t.draw("github.com/frankpaschen99", batch, 0, Constants.camera.viewportHeight-2);
-		
+		if (this.getRegionCollision() != -1) {
+			t.draw("Colliding (Grav Inverted)", batch, 0, 50);
+		} else {
+			t.draw("Not Colliding", batch, 0, 50);
+		}
 		batch.end();
 	
 		// polygon drawing for the map is different. keep it out of batch.begin() and end()
@@ -100,10 +104,12 @@ public class LevelOne implements Screen {
 		switch(getRegionCollision()) {
 			case -1:	// not colliding
 				this.p.body.setGravityScale(5);
+				Constants.world.setGravity(new Vector2(0, -10));
 				System.out.println("NOT COLLIDING");
 				break;
 			case 1:
-				this.p.body.setGravityScale(0);
+				//this.p.body.setGravityScale(0);
+				Constants.world.setGravity(new Vector2(0, 10));
 				System.out.println("COLLIDING");
 				break;
 			case 2:
