@@ -34,17 +34,26 @@ public class LevelOne implements Screen {
 	private OrthographicCamera textCam;
 	private GameJam game;	// going to be used later for moving to the next level
 	private EndGate endGate;
-		
+	private FreeTypeFontGenerator generator;
+    private FreeTypeFontParameter parameter;
+    private Text textHandler;
+    
 	public LevelOne(GameJam _game) {
+		// Setup
 		batch = new SpriteBatch();
 		this.game = _game;
 		entityManager = new EntityManager();
-
-		/* Ortho Camera */
+		this.generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.TTF"));
+		this.parameter = new FreeTypeFontParameter();
+		parameter.size = 16;
+		this.textHandler = new Text(generator, parameter);
+		
+		/* Ortho Camera */	
 		Constants.camera.translate(Constants.camera.viewportWidth / 2, Constants.camera.viewportHeight / 2);
 		Constants.camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
 		Constants.camera.update();
 		
+		// Text Camera 
 		textCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());	// pixel perfect cam for text rendering
 		textCam.setToOrtho(false);
 		textCam.update();
@@ -69,11 +78,12 @@ public class LevelOne implements Screen {
 		
 		// Colliders
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60);
-		// Screen borders
 		entityManager.addCollider(new Vector2(-2, 0), 1, 100); // left side
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth+3, 0), 1, 100); // right side
 		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight+3), 100, 1);
 		entityManager.addCollider(new Vector2(40, 90), 5, 1);
+		
+		// Exit Gate
 		endGate = new EndGate(new Vector2(20, 0));
 		
 		System.out.println("LevelOne started");
@@ -90,11 +100,6 @@ public class LevelOne implements Screen {
 	    Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 		
 	    /* Font Setup */
-	    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.TTF"));
-	    FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-	    parameter.size = 16;
-	    Text t = new Text(generator, parameter);
-	    
 	    //* SET UP SPRITEBATCH *//
 		batch.begin();
 		batch.setProjectionMatrix(Constants.camera.combined);
@@ -104,15 +109,10 @@ public class LevelOne implements Screen {
 		
 		batch.end();
 		 //* RENDERING COMPLETE *//
+		
 		batch.begin();
 		batch.setProjectionMatrix(this.textCam.combined);
-		// Text Rendering
-		t.draw("github.com/frankpaschen99", batch, 0, this.textCam.viewportHeight);
-		if (this.getRegionCollision() != -1) {
-			t.draw("Colliding (Grav Inverted)", batch, 0, 60);
-		} else {
-			t.draw("Not Colliding", batch, 0, 60);
-		}
+		textHandler.draw("github.com/frankpaschen99", batch, 0, this.textCam.viewportHeight);
 		batch.end();
 	
 		// polygon drawing is different. keep it out of batch.begin() and end()
@@ -124,23 +124,24 @@ public class LevelOne implements Screen {
 		
 		debugRenderer.render(Constants.world, Constants.camera.combined);
 		Constants.world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
-		this.fragmentCollision();
+		this.fragmentCollision(batch);
 		this.checkGateCollision();
 	}
 	private void checkGateCollision() {
-		if (this.endGate.getRectangle().contains(this.p.getPosition())) {
+		if (this.endGate.getRectangle().contains(this.p.getPosition())) {	// TODO: check if player has acquired objective block
 			System.out.println("Level Complete");
 		}
 	}
-	private void fragmentCollision() {
+	private void fragmentCollision(SpriteBatch batch) {
 		// determine physics properties that affect player here
 		switch(getRegionCollision()) {
 			case -1:	// not colliding
-				this.p.body.setGravityScale(5);
 				Constants.world.setGravity(new Vector2(0, -10));
+				drawEffect("No Effect", batch);
 				break;
 			case 1:
 				Constants.world.setGravity(new Vector2(0, 5));
+				this.drawEffect("Inverted Gravity", batch);
 				break;
 			case 2:
 				break;
@@ -149,6 +150,12 @@ public class LevelOne implements Screen {
 			default:
 				break;
 			}
+	}
+	private void drawEffect(String effect, SpriteBatch batch) {
+		batch.begin();
+		batch.setProjectionMatrix(this.textCam.combined);
+		textHandler.draw(effect, batch, 0, Gdx.graphics.getHeight()-20);
+		batch.end();
 	}
 	private byte getRegionCollision() {
 		for (Fragment f : this.map.getFragments()) {

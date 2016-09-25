@@ -44,7 +44,7 @@ public class Player {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = rect;
 		fixtureDef.density = 1f; 
-		fixtureDef.friction = 1f;
+		fixtureDef.friction = 0f;
 		fixtureDef.restitution = 0.2f; // Make it bounce a little bit
 		body.setGravityScale(5);	// higher # = increases gravity for this body only
 		// Create our fixture and attach it to the body
@@ -71,9 +71,9 @@ public class Player {
 		if (Gdx.input.isKeyPressed(Keys.D)) {
 		     this.body.applyLinearImpulse(50f, 0, pos.x, pos.y, true);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+		/*if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
-		}
+		}*/
 		System.out.println(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
 		//System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
 	}
