@@ -46,7 +46,7 @@ public class Player {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = rect;
 		fixtureDef.density = 1f; 
-		fixtureDef.friction = 0f;
+		fixtureDef.friction = 1f;
 		fixtureDef.restitution = 0.2f; // Make it bounce a little bit
 		body.setGravityScale(5);	// higher # = increases gravity for this body only
 		// Create our fixture and attach it to the body
