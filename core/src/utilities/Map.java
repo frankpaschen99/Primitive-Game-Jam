@@ -38,7 +38,7 @@ public class Map {
 	public List<Fragment> getFragments() {
 		return this.fragments;
 	}
-	public void draw(Batch batch) {
+	public void draw() {
 		// for each fragment, shape render them
 		shapeRenderer.begin(ShapeType.Line);
 		for(Fragment f : this.fragments) {

@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import utilities.Constants;
+
 public class Player {
 	private Sprite sprite;
 	public Body body;
@@ -26,7 +28,7 @@ public class Player {
 		sprite.setPosition(startX, startY);
 		System.out.println("Player constructor called");
 	}
-	public void physicsSetup(World world) {
+	public void physicsSetup() {
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
 		bodyDef.type = BodyType.DynamicBody;
@@ -34,7 +36,7 @@ public class Player {
 		bodyDef.position.set(this.sprite.getX(), this.sprite.getY());
 		bodyDef.fixedRotation = true;
 		// Create our body in the world using our body definition
-		body = world.createBody(bodyDef);
+		body = Constants.world.createBody(bodyDef);
 		
 		// Create a circle shape and set its radius to 6
 		PolygonShape rect = new PolygonShape();
@@ -58,7 +60,7 @@ public class Player {
 	public void draw(Batch batch) {
 		batch.draw(sprite, sprite.getX(), sprite.getY());
 	}
-	public void update(OrthographicCamera camera) {
+	public void update() {
 		this.sprite.setPosition(body.getPosition().x - this.sprite.getWidth() / 2, body.getPosition().y - this.sprite.getHeight() / 2);
 		Vector2 pos = this.body.getPosition();
 
@@ -74,7 +76,7 @@ public class Player {
 		/*if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
 		}*/
-		//System.out.println(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
+		//System.out.println(Constants.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
 		//System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
 	}
 	public Vector2 getPosition() {
