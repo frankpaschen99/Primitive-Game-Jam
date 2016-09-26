@@ -13,14 +13,14 @@ public class ObjectiveBlock {
 	private ShapeRenderer shapeRenderer;
 	
 	public ObjectiveBlock(Vector2 position) {
-		r = new Rectangle(position.x, position.y, 5f, 5f);
+		r = new Rectangle(position.x, position.y, 15f, 15f);
 		this.shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(Constants.camera.combined);
 	}
 	public void draw() {
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.rect(this.r.x, this.r.y, this.r.width, this.r.height);
+		shapeRenderer.rect(this.r.x, this.r.y, 5f, 5f);
 		shapeRenderer.end();
 	}
 	public Rectangle getRectangle() {
