@@ -2,11 +2,15 @@ package stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -24,8 +28,8 @@ import utilities.Text;
 
 public abstract class LevelBase implements Screen {
 	/* Member Variables */
-	private Player player;
-	private SpriteBatch batch;
+	protected Player player;
+	protected SpriteBatch batch;
 	private Map map;
 	protected EntityManager entityManager;
 	private EndGate endGate;
@@ -35,6 +39,7 @@ public abstract class LevelBase implements Screen {
 	private FreeTypeFontGenerator generator;
     private FreeTypeFontParameter parameter;
     private Box2DDebugRenderer debugRenderer;
+    private boolean levelComplete = false;
     
 	/* Constructor */
 	public LevelBase(GameJam _game, Vector2 playerStartPos, Vector2 endGatePos, String jsonFile) {
@@ -96,22 +101,25 @@ public abstract class LevelBase implements Screen {
 		// Draw polygons/shapes
 		map.draw();
 		endGate.draw();
+		entityManager.draw();
 		
 		// Update entities
 		player.update();
 		
-		debugRenderer.render(Constants.world, Constants.camera.combined);
+		// debugRenderer.render(Constants.world, Constants.camera.combined);
 		Constants.world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
 		this.fragmentCollision();
 		this.checkGateCollision();
-
 	}
 	private void checkGateCollision() {
+		if (levelComplete) return;
 		if (this.endGate.getRectangle().contains(this.player.getPosition())) {	// TODO: check if player has acquired objective block
 			batch.begin();
 			batch.setProjectionMatrix(this.textCam.combined);
 			textHandler.draw("Stage Complete", batch, 0, Gdx.graphics.getHeight()-40);
 			batch.end();
+			this.levelComplete = true;
+			this.endStage();
 		}
 	}
 	protected void drawEffect(String effect) {
@@ -128,5 +136,6 @@ public abstract class LevelBase implements Screen {
 		}
 		return -1;
 	}
+	protected abstract void endStage();
 	protected abstract void fragmentCollision();
 }

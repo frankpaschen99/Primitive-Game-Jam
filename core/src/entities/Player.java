@@ -21,7 +21,8 @@ import utilities.Constants;
 public class Player {
 	private Sprite sprite;
 	public Body body;
-
+	private boolean frozen = false;
+	
 	public Player(float startX, float startY) {
 		/* Sprite Initialization */
 		sprite = new Sprite(new Texture(Gdx.files.internal("player.png")));
@@ -61,18 +62,21 @@ public class Player {
 		batch.draw(sprite, sprite.getX(), sprite.getY());
 	}
 	public void update() {
-		this.sprite.setPosition(body.getPosition().x - this.sprite.getWidth() / 2, body.getPosition().y - this.sprite.getHeight() / 2);
-		Vector2 pos = this.body.getPosition();
+		if (!frozen) {
+			this.sprite.setPosition(body.getPosition().x - this.sprite.getWidth() / 2, body.getPosition().y - this.sprite.getHeight() / 2);
+			Vector2 pos = this.body.getPosition();
 
-		// apply left impulse, but only if max velocity is not reached yet
-		if (Gdx.input.isKeyPressed(Keys.A)) {          
-		     this.body.applyLinearImpulse(-50f, 0, pos.x, pos.y, true);
-		}
+			// apply left impulse, but only if max velocity is not reached yet
+			if (Gdx.input.isKeyPressed(Keys.A)) {          
+			     this.body.applyLinearImpulse(-50f, 0, pos.x, pos.y, true);
+			}
 
-		// apply right impulse, but only if max velocity is not reached yet
-		if (Gdx.input.isKeyPressed(Keys.D)) {
-		     this.body.applyLinearImpulse(50f, 0, pos.x, pos.y, true);
+			// apply right impulse, but only if max velocity is not reached yet
+			if (Gdx.input.isKeyPressed(Keys.D)) {
+			     this.body.applyLinearImpulse(50f, 0, pos.x, pos.y, true);
+			}
 		}
+		
 		/*if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
 		}*/
@@ -81,5 +85,8 @@ public class Player {
 	}
 	public Vector2 getPosition() {
 		return this.body.getPosition();
+	}
+	public void toggleFrozen() {
+		this.frozen = !this.frozen;
 	}
 }

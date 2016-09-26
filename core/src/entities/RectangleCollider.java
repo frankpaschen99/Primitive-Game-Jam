@@ -1,5 +1,8 @@
 package entities;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,6 +11,11 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import utilities.Constants;
 
 public class RectangleCollider {
+	
+	private ShapeRenderer shapeRenderer;
+	private Vector2 position;
+	private float width, height;
+	
 	public RectangleCollider(Vector2 position, float width, float height) {
 		// Create our body definition
 		BodyDef groundBodyDef = new BodyDef();  
@@ -26,5 +34,18 @@ public class RectangleCollider {
 		groundBody.createFixture(groundBox, 0.0f); 
 		// Clean up after ourselves
 		groundBox.dispose();
+		
+		this.position = position;
+		this.width = width;
+		this.height = height;
+		
+		this.shapeRenderer = new ShapeRenderer();
+	}
+	public void draw() {
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setProjectionMatrix(Constants.camera.combined);
+		shapeRenderer.setColor(Color.LIME);
+		shapeRenderer.rect(position.x - width * 2, position.y - height * 2, width * 4, height * 4);
+		shapeRenderer.end();
 	}
 }

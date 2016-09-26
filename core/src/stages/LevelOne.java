@@ -1,6 +1,16 @@
 package stages;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.frank.gamejam.GameJam;
 
 import utilities.Constants;
@@ -15,7 +25,7 @@ public class LevelOne extends LevelBase {
 		entityManager.addCollider(new Vector2(-2, 0), 1, 100); // left side
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth+3, 0), 1, 100); // right side
 		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight+3), 100, 1);
-		entityManager.addCollider(new Vector2(40, 90), 5, 1);
+		entityManager.addCollider(new Vector2(40, 90), 5, 1);	
 	}
 
 	@Override
@@ -25,10 +35,10 @@ public class LevelOne extends LevelBase {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(float delta) {		
 		// TODO Auto-generated method stub
 		super.render(delta);
-		
+
 		// Do any additional rendering here
 	}
 
@@ -81,5 +91,11 @@ public class LevelOne extends LevelBase {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	protected void endStage() {
+		// freeze for 5 seconds
+		player.toggleFrozen();
 	}
 }
