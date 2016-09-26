@@ -66,7 +66,7 @@ public class LevelOne extends LevelBase {
 	protected void fragmentCollision() {
 		// Handle custom collision with fragments
 		switch(getRegionCollision()) {
-		case -1:	// not colliding
+		case -1:
 			Constants.world.setGravity(new Vector2(0, -10));
 			drawEffect("No Effect");
 			break;
@@ -82,5 +82,4 @@ public class LevelOne extends LevelBase {
 			break;
 		}
 	}
-
 }
