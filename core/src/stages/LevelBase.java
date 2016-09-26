@@ -2,6 +2,7 @@ package stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -20,6 +21,7 @@ import com.frank.gamejam.GameJam;
 
 import entities.EndGate;
 import entities.EntityManager;
+import entities.ObjectiveBlock;
 import entities.Player;
 import utilities.Constants;
 import utilities.Fragment;
@@ -34,15 +36,17 @@ public abstract class LevelBase implements Screen {
 	protected EntityManager entityManager;
 	private EndGate endGate;
 	private OrthographicCamera textCam;
-	private GameJam game;
+	protected GameJam game;
 	private Text textHandler;
 	private FreeTypeFontGenerator generator;
     private FreeTypeFontParameter parameter;
     private Box2DDebugRenderer debugRenderer;
     private boolean levelComplete = false;
+    private ObjectiveBlock objectiveBlock;
+    private boolean objectiveBlockAcquired = false;
     
 	/* Constructor */
-	public LevelBase(GameJam _game, Vector2 playerStartPos, Vector2 endGatePos, String jsonFile) {
+	public LevelBase(GameJam _game, Vector2 playerStartPos, Vector2 endGatePos, Vector2 objBlockPos, String jsonFile) {
 		/* Initialize member variables */
 		this.batch = new SpriteBatch();
 		this.game = _game;
@@ -81,6 +85,9 @@ public abstract class LevelBase implements Screen {
 		
 		/* EndGate Setup */
 		endGate = new EndGate(endGatePos);
+		
+		/* Objective Block Setup */
+		this.objectiveBlock = new ObjectiveBlock(objBlockPos);
 	}
 	public void render(float delta) {
 		Gdx.gl.glClearColor( 0, 0, 0, 1 );
@@ -96,12 +103,14 @@ public abstract class LevelBase implements Screen {
 	    batch.begin();
 		batch.setProjectionMatrix(this.textCam.combined);
 		textHandler.draw("github.com/frankpaschen99", batch, 0, this.textCam.viewportHeight);
+		textHandler.draw("Press 'R' to restart.", batch, 0,  Gdx.graphics.getHeight()-60);
 		batch.end();
 		
 		// Draw polygons/shapes
 		map.draw();
 		endGate.draw();
 		entityManager.draw();
+		this.objectiveBlock.draw();
 		
 		// Update entities
 		player.update();
@@ -109,15 +118,27 @@ public abstract class LevelBase implements Screen {
 		// debugRenderer.render(Constants.world, Constants.camera.combined);
 		Constants.world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
 		this.fragmentCollision();
+		this.checkObjBlockCollision();
 		this.checkGateCollision();
+		
+		// Keyboard Input
+		this.handleKeyboardInput();
+	}
+	private void checkObjBlockCollision() {
+		if (objectiveBlockAcquired) this.objectiveBlock.moveWithPlayer(this.player);
+		if (this.objectiveBlock.getRectangle().contains(this.player.getPosition()) && !objectiveBlockAcquired) {
+			objectiveBlockAcquired = true;
+		}
 	}
 	private void checkGateCollision() {
-		if (levelComplete) return;
-		if (this.endGate.getRectangle().contains(this.player.getPosition())) {	// TODO: check if player has acquired objective block
+		if (levelComplete) {
 			batch.begin();
 			batch.setProjectionMatrix(this.textCam.combined);
 			textHandler.draw("Stage Complete", batch, 0, Gdx.graphics.getHeight()-40);
 			batch.end();
+			return;
+		}
+		if (this.endGate.getRectangle().contains(this.player.getPosition()) && this.objectiveBlockAcquired) {
 			this.levelComplete = true;
 			this.endStage();
 		}
@@ -138,4 +159,5 @@ public abstract class LevelBase implements Screen {
 	}
 	protected abstract void endStage();
 	protected abstract void fragmentCollision();
+	protected abstract void handleKeyboardInput();
 }

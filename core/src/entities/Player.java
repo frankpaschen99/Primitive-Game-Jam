@@ -80,13 +80,16 @@ public class Player {
 		/*if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
 		}*/
-		//System.out.println(Constants.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
-		//System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
+		System.out.println(Constants.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
+
 	}
 	public Vector2 getPosition() {
 		return this.body.getPosition();
 	}
 	public void toggleFrozen() {
 		this.frozen = !this.frozen;
+	}
+	public Vector2 getSpritePosition() {
+		return new Vector2(this.sprite.getX(), this.sprite.getY());
 	}
 }

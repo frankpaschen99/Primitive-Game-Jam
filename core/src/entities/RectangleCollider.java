@@ -45,7 +45,7 @@ public class RectangleCollider {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setProjectionMatrix(Constants.camera.combined);
 		shapeRenderer.setColor(Color.LIME);
-		shapeRenderer.rect(position.x - width * 2, position.y - height * 2, width * 4, height * 4);
+		shapeRenderer.rect(position.x - width * 2, position.y - height * 2, width * 4, height * 4);	// WHAT THE HELL
 		shapeRenderer.end();
 	}
 }

@@ -5,8 +5,8 @@ import com.frank.gamejam.GameJam;
 
 public class LevelTwo extends LevelBase {
 
-	public LevelTwo(GameJam _game, Vector2 playerStartPos, Vector2 endGatePos, String jsonFile) {
-		super(_game, playerStartPos, endGatePos, jsonFile);
+	public LevelTwo(GameJam _game, Vector2 playerStartPos, Vector2 endGatePos, Vector2 objBlockPos, String jsonFile) {
+		super(_game, playerStartPos, endGatePos, objBlockPos, jsonFile);
 		// TODO Auto-generated constructor stub
 		
 	}
@@ -55,6 +55,12 @@ public class LevelTwo extends LevelBase {
 
 	@Override
 	protected void endStage() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleKeyboardInput() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,6 +1,7 @@
 package stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -18,7 +19,7 @@ import utilities.Constants;
 public class LevelOne extends LevelBase {
 
 	public LevelOne(GameJam _game) {
-		super(_game, new Vector2(190, 25), new Vector2(20, 0), "level_1.json");
+		super(_game, new Vector2(190, 25), new Vector2(20, 0), new Vector2(37, 96), "level_1.json");
 		
 		// Add walls
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60);
@@ -97,5 +98,13 @@ public class LevelOne extends LevelBase {
 	protected void endStage() {
 		// freeze for 5 seconds
 		player.toggleFrozen();
+	}
+
+	@Override
+	protected void handleKeyboardInput() {
+		// TODO Auto-generated method stub
+		if (Gdx.input.isKeyPressed(Keys.R)) {          
+		     this.game.setScreen(new LevelOne(game));
+		}
 	}
 }
