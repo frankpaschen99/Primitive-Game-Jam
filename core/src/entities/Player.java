@@ -80,7 +80,7 @@ public class Player {
 		/*if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
 		}*/
-		System.out.println(Constants.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
+		// System.out.println(Constants.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
 
 	}
 	public Vector2 getPosition() {
