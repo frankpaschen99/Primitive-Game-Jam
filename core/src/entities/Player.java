@@ -74,7 +74,7 @@ public class Player {
 		/*if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
 		}*/
-		System.out.println(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
+		//System.out.println(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
 		//System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
 	}
 	public Vector2 getPosition() {

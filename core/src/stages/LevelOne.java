@@ -43,7 +43,7 @@ public class LevelOne implements Screen {
 		batch = new SpriteBatch();
 		this.game = _game;
 		entityManager = new EntityManager();
-		this.generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.TTF"));
+		this.generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.ttf"));
 		this.parameter = new FreeTypeFontParameter();
 		parameter.size = 16;
 		this.textHandler = new Text(generator, parameter);
@@ -124,24 +124,28 @@ public class LevelOne implements Screen {
 		
 		debugRenderer.render(Constants.world, Constants.camera.combined);
 		Constants.world.step(1/60f, 6, 2);	// lol bethesda problems am i rite
-		this.fragmentCollision(batch);
+		this.fragmentCollision();
 		this.checkGateCollision();
 	}
 	private void checkGateCollision() {
 		if (this.endGate.getRectangle().contains(this.p.getPosition())) {	// TODO: check if player has acquired objective block
-			System.out.println("Level Complete");
+			//System.out.println("Level Complete");
+			batch.begin();
+			batch.setProjectionMatrix(this.textCam.combined);
+			textHandler.draw("Stage Complete", batch, 0, Gdx.graphics.getHeight()-40);
+			batch.end();
 		}
 	}
-	private void fragmentCollision(SpriteBatch batch) {
+	private void fragmentCollision() {
 		// determine physics properties that affect player here
 		switch(getRegionCollision()) {
 			case -1:	// not colliding
 				Constants.world.setGravity(new Vector2(0, -10));
-				drawEffect("No Effect", batch);
+				drawEffect("No Effect");
 				break;
 			case 1:
 				Constants.world.setGravity(new Vector2(0, 5));
-				this.drawEffect("Inverted Gravity", batch);
+				this.drawEffect("Inverted Gravity");
 				break;
 			case 2:
 				break;
@@ -151,7 +155,7 @@ public class LevelOne implements Screen {
 				break;
 			}
 	}
-	private void drawEffect(String effect, SpriteBatch batch) {
+	private void drawEffect(String effect) {
 		batch.begin();
 		batch.setProjectionMatrix(this.textCam.combined);
 		textHandler.draw(effect, batch, 0, Gdx.graphics.getHeight()-20);

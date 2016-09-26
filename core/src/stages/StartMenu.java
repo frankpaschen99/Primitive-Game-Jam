@@ -33,7 +33,7 @@ public class StartMenu implements Screen {
 
 	@Override
 	public void render(float delta) {
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.TTF"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("prstart.ttf"));
 	    FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 	    parameter.size = 16;
 	    Text t = new Text(generator, parameter);
@@ -41,7 +41,7 @@ public class StartMenu implements Screen {
 		// TODO Auto-generated method stub
 		batch.begin();
 		bgSprite.draw(batch);
-		if (drawText) t.draw("Goal: Get the objective block, then proceed to the \nexit gate. \nThe map is divided into fragments, each with \nunique physical properties. \nPress ENTER again to begin. \nGood luck.", batch, 0, Gdx.graphics.getHeight() / 2);
+		if (drawText) t.draw("Goal: Get the objective block, then proceed to the \nexit gate. \nThe map is divided into fragments, each with \nunique physical properties. \nPress ENTER again to begin.", batch, 0, Gdx.graphics.getHeight() / 2+50);
 		batch.end();
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER) && drawText) {
