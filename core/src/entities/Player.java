@@ -22,6 +22,8 @@ public class Player {
 	private Sprite sprite;
 	public Body body;
 	private boolean frozen = false;
+	private static boolean invertedJump = false;
+	private static boolean canJump = false;
 	
 	public Player(float startX, float startY) {
 		/* Sprite Initialization */
@@ -75,11 +77,15 @@ public class Player {
 			if (Gdx.input.isKeyPressed(Keys.D)) {
 			     this.body.applyLinearImpulse(50f, 0, pos.x, pos.y, true);
 			}
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE) && invertedJump && canJump) {
+				this.body.applyLinearImpulse(0, -800f, pos.x, pos.y, true);
+				disableJump();
+			}
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE) && !invertedJump && canJump) {
+				this.body.applyLinearImpulse(0, 800f, pos.x, pos.y, true);
+				disableJump();
+			}
 		}
-		
-		/*if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			this.body.applyLinearImpulse(0, 500f, pos.x, pos.y, true);
-		}*/
 		// System.out.println(Constants.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
 
 	}
@@ -91,5 +97,17 @@ public class Player {
 	}
 	public Vector2 getSpritePosition() {
 		return new Vector2(this.sprite.getX(), this.sprite.getY());
+	}
+	public static void upsideDownJump() {
+		invertedJump = true;
+	}
+	public static void regularJump() {
+		invertedJump = false;
+	}
+	public static void disableJump() {
+		canJump = false;
+	}
+	public static void enableJump() {
+		canJump = true;
 	}
 }

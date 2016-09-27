@@ -16,6 +16,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.frank.gamejam.GameJam;
 
@@ -103,7 +108,7 @@ public abstract class LevelBase implements Screen {
 	    batch.begin();
 		batch.setProjectionMatrix(this.textCam.combined);
 		textHandler.draw("github.com/frankpaschen99", batch, 0, this.textCam.viewportHeight);
-		textHandler.draw("Press 'R' to restart.", batch, 0,  Gdx.graphics.getHeight()-40);
+		textHandler.draw("Press 'R' to restart. [Broken]", batch, 0,  Gdx.graphics.getHeight()-40);
 		batch.end();
 		
 		// Draw polygons/shapes
@@ -159,5 +164,35 @@ public abstract class LevelBase implements Screen {
 	}
 	protected abstract void endStage();
 	protected abstract void fragmentCollision();
-	protected abstract void handleKeyboardInput();
+	protected void handleKeyboardInput() {
+		Constants.world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureB = contact.getFixtureB();
+                
+                Player.enableJump();
+                if (fixtureB.getBody().getUserData() == "ceil") {
+                	// regular jump
+                	Player.upsideDownJump();
+                }
+                if (fixtureB.getBody().getUserData() == "floor") {
+                	// upside down jump
+                	Player.regularJump();
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+				// TODO Auto-generated method stub
+			}
+        });
+	}
 }

@@ -12,8 +12,8 @@ public class EntityManager {
 	public EntityManager() {
 		colliders = new ArrayList<RectangleCollider>();
 	}
-	public void addCollider(Vector2 position, float width, float height) {
-		this.colliders.add(new RectangleCollider(position, width, height));
+	public void addCollider(Vector2 position, float width, float height, String metadata) {
+		this.colliders.add(new RectangleCollider(position, width, height, metadata));
 	}
 	public void draw() {
 		for (RectangleCollider r : this.colliders) {

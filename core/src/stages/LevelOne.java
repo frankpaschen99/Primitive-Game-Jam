@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
@@ -22,11 +27,14 @@ public class LevelOne extends LevelBase {
 		super(_game, new Vector2(190, 25), new Vector2(20, 0), new Vector2(33, 94), "level_1.json");
 		
 		// Add walls
-		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60);
-		entityManager.addCollider(new Vector2(-2, 0), 1, 100); // left side
-		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth+3, 0), 1, 100); // right side
-		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight+3), 100, 1);
-		entityManager.addCollider(new Vector2(40, 90), 5, 1);	
+		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60, "undefined");
+		
+		entityManager.addCollider(new Vector2(0, 0), 0, 100, "wall"); // left side
+		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth, 0), 0, 100, "wall"); // right side
+		entityManager.addCollider(new Vector2(0, 0), Constants.camera.viewportWidth, 0, "floor");
+		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight), 100, 0, "ceil");
+		
+		entityManager.addCollider(new Vector2(40, 90), 5, 1, "undefined");	// platform	
 	}
 
 	@Override
@@ -100,8 +108,9 @@ public class LevelOne extends LevelBase {
 		player.toggleFrozen();
 	}
 
-	@Override
 	protected void handleKeyboardInput() {
+		super.handleKeyboardInput();
+		
 		// TODO Auto-generated method stub
 		if (Gdx.input.isKeyPressed(Keys.R)) {          
 		     // this.game.setScreen(new LevelOne(game));	currently destroys everything. likely box2d related
