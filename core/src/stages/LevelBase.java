@@ -179,6 +179,9 @@ public abstract class LevelBase implements Screen {
                 	// upside down jump
                 	Player.regularJump();
                 }
+                if (fixtureB.getBody().getUserData() == "undefined" || fixtureB.getBody().getUserData() == "wall") {
+                	Player.disableJump();
+                }
             }
 
             @Override
