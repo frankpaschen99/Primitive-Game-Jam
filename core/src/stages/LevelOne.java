@@ -19,7 +19,7 @@ import utilities.Constants;
 public class LevelOne extends LevelBase {
 
 	public LevelOne(GameJam _game) {
-		super(_game, new Vector2(190, 25), new Vector2(20, 0), new Vector2(37, 96), "level_1.json");
+		super(_game, new Vector2(190, 25), new Vector2(20, 0), new Vector2(33, 94), "level_1.json");
 		
 		// Add walls
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60);
@@ -104,7 +104,7 @@ public class LevelOne extends LevelBase {
 	protected void handleKeyboardInput() {
 		// TODO Auto-generated method stub
 		if (Gdx.input.isKeyPressed(Keys.R)) {          
-		     this.game.setScreen(new LevelOne(game));
+		     // this.game.setScreen(new LevelOne(game));	currently destroys everything. likely box2d related
 		}
 	}
 }

@@ -20,13 +20,13 @@ public class ObjectiveBlock {
 	public void draw() {
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.rect(this.r.x, this.r.y, 5f, 5f);
+		shapeRenderer.rect(this.r.x+5f, this.r.y+5f, 5f, 5f);
 		shapeRenderer.end();
 	}
 	public Rectangle getRectangle() {
 		return this.r;
 	}
 	public void moveWithPlayer(Player player) {
-		this.r.setPosition(new Vector2(player.getSpritePosition().x+5, player.getSpritePosition().y));
+		this.r.setPosition(new Vector2(player.getSpritePosition().x, player.getSpritePosition().y-5f));
 	}
 }
