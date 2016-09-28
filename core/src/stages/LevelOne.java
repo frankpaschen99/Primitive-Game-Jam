@@ -79,14 +79,15 @@ public class LevelOne extends LevelBase {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
-		// remove RectangleCollider physics bodies
+		// destroy RectangleCollider physics bodies
 		for (RectangleCollider r : entityManager.colliders) {
 			Constants.world.destroyBody(r.body);
 		}
-		// remove player physics body
+		// destroy player physics body
 		Constants.world.destroyBody(this.player.body);
+		
+		// TODO: remove objective block + end gate
+
 	}
 
 	@Override
@@ -112,8 +113,12 @@ public class LevelOne extends LevelBase {
 
 	@Override
 	protected void endStage() {
-		// freeze for 5 seconds
-		//player.toggleFrozen();
+		// freeze player for 2 seconds, then dispose/change screen
+		try {
+		    Thread.sleep(2000);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
 		this.dispose();
 		game.setScreen(new LevelTwo(game));
 	}

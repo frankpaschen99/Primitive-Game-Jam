@@ -39,15 +39,15 @@ public abstract class LevelBase implements Screen {
 	protected SpriteBatch batch;
 	private Map map;
 	protected EntityManager entityManager;
-	private EndGate endGate;
-	private OrthographicCamera textCam;
+	protected EndGate endGate;
+	protected OrthographicCamera textCam;
 	protected GameJam game;
-	private Text textHandler;
+	protected Text textHandler;
 	private FreeTypeFontGenerator generator;
     private FreeTypeFontParameter parameter;
     private Box2DDebugRenderer debugRenderer;
     private boolean levelComplete = false;
-    private ObjectiveBlock objectiveBlock;
+    protected ObjectiveBlock objectiveBlock;
     private boolean objectiveBlockAcquired = false;
     
 	/* Constructor */
