@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import utilities.Constants;
 
 public class EntityManager {
-	ArrayList<RectangleCollider> colliders;
+	public ArrayList<RectangleCollider> colliders;
 	
 	public EntityManager() {
 		colliders = new ArrayList<RectangleCollider>();

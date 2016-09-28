@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.frank.gamejam.GameJam;
 
+import entities.RectangleCollider;
 import utilities.Constants;
 
 public class LevelOne extends LevelBase {
@@ -29,6 +30,7 @@ public class LevelOne extends LevelBase {
 		// Add walls
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60, "undefined");
 		
+		// screen borders - not in the base class because some levels might extend beyond the viewport
 		entityManager.addCollider(new Vector2(0, 0), 0, 100, "wall"); // left side
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth, 0), 0, 100, "wall"); // right side
 		entityManager.addCollider(new Vector2(0, 0), Constants.camera.viewportWidth, 0, "floor");
@@ -78,7 +80,13 @@ public class LevelOne extends LevelBase {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
+		// remove RectangleCollider physics bodies
+		for (RectangleCollider r : entityManager.colliders) {
+			Constants.world.destroyBody(r.body);
+		}
+		// remove player physics body
+		Constants.world.destroyBody(this.player.body);
 	}
 
 	@Override
@@ -105,7 +113,9 @@ public class LevelOne extends LevelBase {
 	@Override
 	protected void endStage() {
 		// freeze for 5 seconds
-		player.toggleFrozen();
+		//player.toggleFrozen();
+		this.dispose();
+		game.setScreen(new LevelTwo(game));
 	}
 
 	protected void handleKeyboardInput() {
@@ -113,7 +123,8 @@ public class LevelOne extends LevelBase {
 		
 		// TODO Auto-generated method stub
 		if (Gdx.input.isKeyPressed(Keys.R)) {          
-		     // this.game.setScreen(new LevelOne(game));	currently destroys everything. likely box2d related
+			this.dispose();
+			this.game.setScreen(new LevelOne(game));
 		}
 	}
 }

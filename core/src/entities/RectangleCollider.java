@@ -16,15 +16,17 @@ public class RectangleCollider {
 	private ShapeRenderer shapeRenderer;
 	private Vector2 position;
 	private float width, height;
+	public Body body;
+	public BodyDef groundBodyDef;
 	
 	public RectangleCollider(Vector2 position, float width, float height, String metadata) {
 		// Create our body definition
-		BodyDef groundBodyDef = new BodyDef();  
+		groundBodyDef = new BodyDef();  
 		// Set its world position
 		groundBodyDef.position.set(position);  
 
 		// Create a body from the defintion and add it to the world
-		Body groundBody = Constants.world.createBody(groundBodyDef);  
+		body = Constants.world.createBody(groundBodyDef);  
 
 		// Create a polygon shape
 		PolygonShape groundBox = new PolygonShape();  
@@ -32,11 +34,11 @@ public class RectangleCollider {
 		// (setAsBox takes half-width and half-height as arguments)
 		groundBox.setAsBox(width*2, height*2);
 		// Create a fixture from our polygon shape and add it to our ground body  
-		groundBody.createFixture(groundBox, 0.0f); 
+		body.createFixture(groundBox, 0.0f); 
 		// Clean up after ourselves
 		groundBox.dispose();
-		
-		groundBody.setUserData(metadata);	// should be "floor", "ceil", or "wall"
+
+		body.setUserData(metadata);	// should be "floor", "ceil", or "wall"
 		
 		this.position = position;
 		this.width = width;

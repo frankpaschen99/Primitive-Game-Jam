@@ -108,7 +108,7 @@ public abstract class LevelBase implements Screen {
 	    batch.begin();
 		batch.setProjectionMatrix(this.textCam.combined);
 		textHandler.draw("github.com/frankpaschen99", batch, 0, this.textCam.viewportHeight);
-		textHandler.draw("Press 'R' to restart. [Broken]", batch, 0,  Gdx.graphics.getHeight()-40);
+		textHandler.draw("Press 'R' to restart.", batch, 0,  Gdx.graphics.getHeight()-40);
 		batch.end();
 		
 		// Draw polygons/shapes
