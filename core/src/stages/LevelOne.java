@@ -25,7 +25,7 @@ import utilities.Constants;
 public class LevelOne extends LevelBase {
 
 	public LevelOne(GameJam _game) {
-		super(_game, new Vector2(190, 25), new Vector2(20, 0), new Vector2(33, 94), "level_1.json");
+		super(_game, new Vector2(190, 25), new Vector2(20, 0), new Vector2(33, 94), "level_1.json", (byte) 1);
 		
 		// Add walls
 		entityManager.addCollider(new Vector2(Constants.camera.viewportWidth / 2, 0), 1, 60, "undefined");
@@ -96,11 +96,11 @@ public class LevelOne extends LevelBase {
 		switch(getRegionCollision()) {
 		case -1:
 			Constants.world.setGravity(new Vector2(0, -10));
-			drawEffect("No Effect");
+			drawEffect("Effect: No Effect");
 			break;
 		case 1:
 			Constants.world.setGravity(new Vector2(0, 5));
-			this.drawEffect("Inverted Gravity");
+			this.drawEffect("Effect: Inverted Gravity");
 			break;
 		case 2:
 			break;
@@ -127,7 +127,12 @@ public class LevelOne extends LevelBase {
 		super.handleKeyboardInput();
 		
 		// TODO Auto-generated method stub
-		if (Gdx.input.isKeyPressed(Keys.R)) {          
+		if (Gdx.input.isKeyPressed(Keys.R)) {       
+			try {
+			    Thread.sleep(500);
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}
 			this.dispose();
 			this.game.setScreen(new LevelOne(game));
 		}

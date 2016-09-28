@@ -10,7 +10,7 @@ import utilities.Constants;
 public class LevelTwo extends LevelBase {
 
 	public LevelTwo(GameJam _game) {
-		super(_game, new Vector2(190, 25), new Vector2(20, 0), new Vector2(33, 94), "level_2.json");
+		super(_game, new Vector2(190, 25), new Vector2(0, 0), new Vector2(10, 50), "level_2.json", (byte) 2);
 		// TODO Auto-generated constructor stub
 		
 		// screen borders - not in the base class because some levels might extend beyond the viewport
@@ -64,8 +64,14 @@ public class LevelTwo extends LevelBase {
 
 	@Override
 	protected void endStage() {
-		// TODO Auto-generated method stub
-		
+		// freeze player for 2 seconds, then dispose/change screen
+		try {
+		    Thread.sleep(2000);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+		this.dispose();
+		//game.setScreen(new LevelThree(game));
 	}
 
 	@Override

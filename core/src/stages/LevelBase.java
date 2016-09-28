@@ -43,15 +43,17 @@ public abstract class LevelBase implements Screen {
 	protected OrthographicCamera textCam;
 	protected GameJam game;
 	protected Text textHandler;
+	protected Text authorTextHandler;
 	private FreeTypeFontGenerator generator;
     private FreeTypeFontParameter parameter;
     private Box2DDebugRenderer debugRenderer;
     private boolean levelComplete = false;
     protected ObjectiveBlock objectiveBlock;
     private boolean objectiveBlockAcquired = false;
+    private byte levelId;
     
 	/* Constructor */
-	public LevelBase(GameJam _game, Vector2 playerStartPos, Vector2 endGatePos, Vector2 objBlockPos, String jsonFile) {
+	public LevelBase(GameJam _game, Vector2 playerStartPos, Vector2 endGatePos, Vector2 objBlockPos, String jsonFile, byte levelId) {
 		/* Initialize member variables */
 		this.batch = new SpriteBatch();
 		this.game = _game;
@@ -60,6 +62,9 @@ public abstract class LevelBase implements Screen {
 		this.parameter = new FreeTypeFontParameter();
 		this.parameter.size = 16;
 		this.textHandler = new Text(generator, parameter);
+		this.parameter.size = 10;
+		this.authorTextHandler = new Text(generator, parameter);
+		this.levelId = levelId;
 		
 		/* World camera */
 		Constants.camera.translate(Constants.camera.viewportWidth / 2, Constants.camera.viewportHeight / 2);
@@ -107,7 +112,9 @@ public abstract class LevelBase implements Screen {
 	    // Draw Text
 	    batch.begin();
 		batch.setProjectionMatrix(this.textCam.combined);
-		textHandler.draw("github.com/frankpaschen99", batch, 0, this.textCam.viewportHeight);
+		// LOL escape sequences are fun
+		authorTextHandler.draw("g\ni\nt\nh\nu\nb\n.\nc\no\nm\n/\nf\nr\na\nn\nk\np\na\ns\nc\nh\ne\nn\n9\n9", batch, this.textCam.viewportWidth-15, this.textCam.viewportHeight);
+		textHandler.draw("Level " + this.levelId, batch, 0, this.textCam.viewportHeight);
 		textHandler.draw("Press 'R' to restart.", batch, 0,  Gdx.graphics.getHeight()-40);
 		batch.end();
 		
@@ -136,6 +143,7 @@ public abstract class LevelBase implements Screen {
 		}
 	}
 	private void checkGateCollision() {
+		
 		if (levelComplete) {
 			batch.begin();
 			batch.setProjectionMatrix(this.textCam.combined);
@@ -144,6 +152,7 @@ public abstract class LevelBase implements Screen {
 			return;
 		}
 		if (this.endGate.getRectangle().contains(this.player.getPosition()) && this.objectiveBlockAcquired) {
+			System.out.println("called");
 			this.levelComplete = true;
 			this.endStage();
 		}
