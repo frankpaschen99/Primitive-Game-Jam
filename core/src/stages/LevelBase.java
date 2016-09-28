@@ -177,18 +177,24 @@ public abstract class LevelBase implements Screen {
 		Constants.world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
+            	/*
+            	 * For some reason in level 2, the walls/floor/ceiling are assigned to fixtureA instead of fixtureB. dafuq
+            	 */
                 Fixture fixtureB = contact.getFixtureB();
+                Fixture fixtureA = contact.getFixtureA();
                 
                 Player.enableJump();
-                if (fixtureB.getBody().getUserData() == "ceil") {
+                if (fixtureB.getBody().getUserData() == "ceil" || fixtureA.getBody().getUserData() == "ceil") {
                 	// regular jump
+                	Player.enableJump();
                 	Player.upsideDownJump();
                 }
-                if (fixtureB.getBody().getUserData() == "floor") {
+                if (fixtureB.getBody().getUserData() == "floor" || fixtureA.getBody().getUserData() == "floor") {
                 	// upside down jump
+                	Player.enableJump();
                 	Player.regularJump();
                 }
-                if (fixtureB.getBody().getUserData() == "undefined" || fixtureB.getBody().getUserData() == "wall") {
+                if (fixtureB.getBody().getUserData() == "undefined" || fixtureB.getBody().getUserData() == "wall" || fixtureA.getBody().getUserData() == "undefined" || fixtureA.getBody().getUserData() == "wall") {
                 	Player.disableJump();
                 }
             }

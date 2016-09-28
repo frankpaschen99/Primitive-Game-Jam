@@ -80,9 +80,8 @@ public class LevelOne extends LevelBase {
 	@Override
 	public void dispose() {
 		// destroy RectangleCollider physics bodies
-		for (RectangleCollider r : entityManager.colliders) {
-			Constants.world.destroyBody(r.body);
-		}
+		this.entityManager.smartDestroy();
+		
 		// destroy player physics body
 		Constants.world.destroyBody(this.player.body);
 		

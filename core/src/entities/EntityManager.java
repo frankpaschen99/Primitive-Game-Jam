@@ -20,4 +20,11 @@ public class EntityManager {
 			r.draw();
 		}
 	}
+	public void smartDestroy() {
+		// destroy all physics bodies
+		for (RectangleCollider r : this.colliders) {
+			r.body.destroyFixture(r.fixture);
+			Constants.world.destroyBody(r.body);
+		}
+	}
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
@@ -18,6 +19,8 @@ public class RectangleCollider {
 	private float width, height;
 	public Body body;
 	public BodyDef groundBodyDef;
+	public PolygonShape groundBox;
+	public Fixture fixture;
 	
 	public RectangleCollider(Vector2 position, float width, float height, String metadata) {
 		// Create our body definition
@@ -29,12 +32,13 @@ public class RectangleCollider {
 		body = Constants.world.createBody(groundBodyDef);  
 
 		// Create a polygon shape
-		PolygonShape groundBox = new PolygonShape();  
+		groundBox = new PolygonShape();  
 		// Set the polygon shape as a box which is twice the size of our view port and 20 high
 		// (setAsBox takes half-width and half-height as arguments)
 		groundBox.setAsBox(width*2, height*2);
 		// Create a fixture from our polygon shape and add it to our ground body  
-		body.createFixture(groundBox, 0.0f); 
+		fixture = body.createFixture(groundBox, 0.0f); 
+		
 		// Clean up after ourselves
 		groundBox.dispose();
 
