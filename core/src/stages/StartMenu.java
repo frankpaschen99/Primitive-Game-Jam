@@ -45,7 +45,7 @@ public class StartMenu implements Screen {
 		batch.end();
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER) && drawText) {
-			this.game.setScreen(new LevelTwo(this.game));
+			this.game.setScreen(new LevelOne(this.game));
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER) && !drawText) {
 			drawText = true;

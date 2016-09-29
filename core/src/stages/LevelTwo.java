@@ -67,7 +67,9 @@ public class LevelTwo extends LevelBase {
 			drawEffect("Effect: No Effect");
 			break;
 		case 1:	// super speed
-			
+			// thanks alex/sorrer for the CODESSSSSssss
+			if (this.player.body.getLinearVelocity().y >= 0)
+				this.player.body.applyLinearImpulse(new Vector2(this.player.body.getLinearVelocity().x*5, this.player.body.getLinearVelocity().y*10), this.player.body.getPosition(), true);
 			this.drawEffect("Effect: Velocity Boost");
 			break;
 		case 2:

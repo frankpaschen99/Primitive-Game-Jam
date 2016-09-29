@@ -88,6 +88,7 @@ public class Player {
 		}
 		// System.out.println(Constants.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));	// screen to world	
 		// System.out.println("InvertedJump: " + invertedJump);
+		System.out.println(body.getLinearVelocity().x + ", " + body.getLinearVelocity().y);
 		
 	}
 	public Vector2 getPosition() {
