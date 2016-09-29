@@ -10,7 +10,7 @@ import utilities.Constants;
 public class LevelTwo extends LevelBase {
 
 	public LevelTwo(GameJam _game) {
-		super(_game, new Vector2(190, 25), new Vector2(0, 0), new Vector2(10, 50), "level_2.json", (byte) 2);
+		super(_game, new Vector2(190, 25), new Vector2(0, 0), new Vector2(6, 123), "level_2.json", (byte) 2);
 		// TODO Auto-generated constructor stub
 		
 		// screen borders - not in the base class because some levels might extend beyond the viewport
@@ -19,6 +19,7 @@ public class LevelTwo extends LevelBase {
 		entityManager.addCollider(new Vector2(0, 0), Constants.camera.viewportWidth, 0, "floor");
 		entityManager.addCollider(new Vector2(0, Constants.camera.viewportHeight), 100, 0, "ceil");
 		
+		entityManager.addCollider(new Vector2(14, 125), 5, 1, "undefined");	// platform
 	}
 
 	@Override
@@ -60,6 +61,22 @@ public class LevelTwo extends LevelBase {
 	@Override
 	protected void fragmentCollision() {
 		// TODO Auto-generated method stub
+		switch(getRegionCollision()) {
+		case -1:
+			Constants.world.setGravity(new Vector2(0, -10));
+			drawEffect("Effect: No Effect");
+			break;
+		case 1:	// super speed
+			
+			this.drawEffect("Effect: Velocity Boost");
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -76,6 +93,7 @@ public class LevelTwo extends LevelBase {
 
 	@Override
 	protected void handleKeyboardInput() {
+		super.handleKeyboardInput();
 		if (Gdx.input.isKeyPressed(Keys.R)) {          
 			this.dispose();
 			//this.game.setScreen(new LevelOne(game));

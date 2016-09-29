@@ -197,6 +197,8 @@ public abstract class LevelBase implements Screen {
                 if (fixtureB.getBody().getUserData() == "undefined" || fixtureB.getBody().getUserData() == "wall" || fixtureA.getBody().getUserData() == "undefined" || fixtureA.getBody().getUserData() == "wall") {
                 	Player.disableJump();
                 }
+                // System.out.println("fixtureA: " + fixtureA.getBody().getUserData());
+                // System.out.println("fixtureB: " + fixtureB.getBody().getUserData());
             }
 
             @Override
